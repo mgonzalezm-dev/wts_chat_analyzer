@@ -1,0 +1,365 @@
+# Default values for whatsapp-reader
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: "standard"
+
+# API Backend Configuration
+api:
+  replicaCount: 3
+  
+  image:
+    repository: whatsapp-reader/api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8000
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  
+  env:
+    - name: LOG_LEVEL
+      value: "info"
+    - name: CORS_ORIGINS
+      value: "https://app.whatsapp-reader.com"
+  
+  secrets:
+    - name: DATABASE_URL
+      key: database-url
+    - name: REDIS_URL
+      key: redis-url
+    - name: SECRET_KEY
+      key: secret-key
+    - name: AWS_ACCESS_KEY_ID
+      key: aws-access-key-id
+    - name: AWS_SECRET_ACCESS_KEY
+      key: aws-secret-access-key
+  
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 8000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: 8000
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+# Frontend Configuration
+frontend:
+  replicaCount: 2
+  
+  image:
+    repository: whatsapp-reader/frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
+
+# Worker Configuration
+worker:
+  replicaCount: 2
+  
+  image:
+    repository: whatsapp-reader/api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  command: ["celery", "-A", "app.tasks", "worker", "--loglevel=info"]
+  
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+
+# Beat Scheduler Configuration
+beat:
+  enabled: true
+  
+  image:
+    repository: whatsapp-reader/api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  command: ["celery", "-A", "app.tasks", "beat", "--loglevel=info"]
+  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Ingress Configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  hosts:
+    - host: api.whatsapp-reader.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: api
+    - host: app.whatsapp-reader.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+  tls:
+    - secretName: whatsapp-reader-tls
+      hosts:
+        - api.whatsapp-reader.com
+        - app.whatsapp-reader.com
+
+# PostgreSQL Configuration
+postgresql:
+  enabled: true
+  auth:
+    username: whatsapp_user
+    password: changeme
+    database: whatsapp_reader
+    postgresPassword: changeme
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: "fast-ssd"
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+      requests:
+        cpu: 1
+        memory: 1Gi
+    initdb:
+      scripts:
+        init.sql: |
+          -- Custom initialization script
+          CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+          CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Redis Configuration
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: changeme
+  master:
+    persistence:
+      enabled: true
+      size: 8Gi
+      storageClass: "fast-ssd"
+    resources:
+      limits:
+        cpu: 1
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 256Mi
+  replica:
+    replicaCount: 2
+    persistence:
+      enabled: true
+      size: 8Gi
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Service Account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Pod Security Context
+podSecurityContext:
+  fsGroup: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Security Context
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Persistent Volume Claims
+persistence:
+  uploads:
+    enabled: true
+    storageClass: "standard"
+    accessMode: ReadWriteMany
+    size: 50Gi
+    mountPath: /app/uploads
+  exports:
+    enabled: true
+    storageClass: "standard"
+    accessMode: ReadWriteMany
+    size: 20Gi
+    mountPath: /app/exports
+
+# ConfigMaps
+configMaps:
+  nginx:
+    data:
+      nginx.conf: |
+        # Custom nginx configuration
+        client_max_body_size 100M;
+
+# Secrets (to be created separately)
+secrets:
+  api:
+    create: false
+    name: whatsapp-reader-secrets
+
+# Network Policies
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: ingress-nginx
+      ports:
+      - protocol: TCP
+        port: 8000
+  egress:
+    - to:
+      - namespaceSelector: {}
+      ports:
+      - protocol: TCP
+        port: 5432
+      - protocol: TCP
+        port: 6379
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Monitoring
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    path: /metrics
+  prometheusRule:
+    enabled: true
+    rules:
+      - alert: HighErrorRate
+        expr: rate(app_requests_total{status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High error rate detected
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(app_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High response time detected
+
+# Backup Configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"
+  retention: 30
+  s3:
+    bucket: whatsapp-reader-backups
+    region: us-east-1
+
+# Node Selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - whatsapp-reader
+        topologyKey: kubernetes.io/hostname

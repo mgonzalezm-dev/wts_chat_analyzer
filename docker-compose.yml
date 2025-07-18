@@ -1,0 +1,244 @@
+version: '3.8'
+
+services:
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: whatsapp-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./exports:/var/www/exports
+    depends_on:
+      - api
+      - frontend
+    networks:
+      - whatsapp-network
+    restart: unless-stopped
+
+  # Backend API
+  api:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: whatsapp-api
+    environment:
+      - DATABASE_URL=postgresql://whatsapp_app:changeme@postgres:5432/whatsapp_reader
+      - REDIS_URL=redis://:changeme@redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here}
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:3000
+      - UPLOAD_PATH=/app/uploads
+      - EXPORT_PATH=/app/exports
+    volumes:
+      - ./backend:/app:cached
+      - ./uploads:/app/uploads
+      - ./exports:/app/exports
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - whatsapp-network
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+  # Frontend Development Server
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      args:
+        - NODE_ENV=development
+    container_name: whatsapp-frontend
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost/api
+      - VITE_WS_URL=ws://localhost/ws
+    volumes:
+      - ./frontend:/app:cached
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - whatsapp-network
+    command: npm run dev -- --host 0.0.0.0 --port 3000
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: whatsapp-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=whatsapp_reader
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - whatsapp-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: whatsapp-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=changeme
+    volumes:
+      - redis_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    ports:
+      - "6379:6379"
+    networks:
+      - whatsapp-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Celery Worker
+  worker:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: whatsapp-worker
+    environment:
+      - DATABASE_URL=postgresql://whatsapp_app:changeme@postgres:5432/whatsapp_reader
+      - REDIS_URL=redis://:changeme@redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here}
+      - LOG_LEVEL=debug
+    volumes:
+      - ./backend:/app:cached
+      - ./uploads:/app/uploads
+      - ./exports:/app/exports
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - whatsapp-network
+    command: celery -A app.tasks worker --loglevel=info --concurrency=2
+    restart: unless-stopped
+
+  # Celery Beat Scheduler
+  beat:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: whatsapp-beat
+    environment:
+      - DATABASE_URL=postgresql://whatsapp_app:changeme@postgres:5432/whatsapp_reader
+      - REDIS_URL=redis://:changeme@redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here}
+      - LOG_LEVEL=debug
+    volumes:
+      - ./backend:/app:cached
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - whatsapp-network
+    command: celery -A app.tasks beat --loglevel=info
+    restart: unless-stopped
+
+  # Flower - Celery Monitoring
+  flower:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: whatsapp-flower
+    environment:
+      - CELERY_BROKER_URL=redis://:changeme@redis:6379/0
+      - FLOWER_PORT=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+    networks:
+      - whatsapp-network
+    command: celery -A app.tasks flower --port=5555
+    restart: unless-stopped
+
+  # pgAdmin - Database Management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: whatsapp-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - whatsapp-network
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+
+  # Redis Commander - Redis Management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: whatsapp-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:changeme
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - whatsapp-network
+    restart: unless-stopped
+
+  # Mailhog - Email Testing
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: whatsapp-mailhog
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI
+    networks:
+      - whatsapp-network
+    restart: unless-stopped
+
+networks:
+  whatsapp-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+# Development Frontend Dockerfile
+# Create this file as frontend/Dockerfile.dev

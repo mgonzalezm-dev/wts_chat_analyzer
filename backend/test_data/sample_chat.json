@@ -1,0 +1,453 @@
+{
+  "messages": [
+    {
+      "timestamp": "2024-01-15T10:30:00",
+      "sender": "System",
+      "content": "Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them. Tap to learn more.",
+      "type": "system"
+    },
+    {
+      "timestamp": "2024-01-15T10:30:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Hey everyone! 👋",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:31:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Hi John! How are you?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:31:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "I'm doing great, thanks! Just wanted to share some exciting news",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:32:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "What's up?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:32:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "I got the promotion! 🎉",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:33:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Congratulations! That's amazing news! 🥳",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:33:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Wow, congrats John! Well deserved!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:34:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "That's fantastic! We should celebrate",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:34:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Thanks everyone! Drinks on me this Friday? 🍻",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:35:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Count me in!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:35:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Absolutely!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:36:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "I'll be there!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:37:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "<Media omitted>",
+      "type": "image",
+      "media": {
+        "filename": "IMG_20240115_103700.jpg",
+        "mime_type": "image/jpeg",
+        "size": 2048576
+      }
+    },
+    {
+      "timestamp": "2024-01-15T10:37:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Here's a photo from the office when they announced it",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:38:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "You look so happy! 😊",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:40:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Hey, did you guys see the game last night?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:41:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Which game?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:41:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "The Lakers game! It was insane",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:42:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "I missed it, was at dinner with family",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:42:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "I don't really follow basketball 😅",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:43:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "They won in overtime! LeBron scored 45 points",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:44:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "That's impressive!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:45:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Speaking of family, my sister just had a baby! 👶",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:45:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "OMG! Boy or girl?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:46:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "A little girl! They named her Emma",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:46:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Such a beautiful name! Congrats to your sister!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:47:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Congrats uncle John! 😄",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:48:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "You must be so excited to meet her",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:48:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "I am! Going to visit them this weekend",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:50:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Don't forget to take lots of photos!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:51:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Will do! 📸",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:52:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Hey, changing topics - anyone up for hiking this Sunday?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:53:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Where were you thinking?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:53:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Maybe Griffith Park? The weather should be nice",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:54:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "I'm in! I need to get out more",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:54:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Sounds good to me!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:55:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Let's do it! What time?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:55:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "How about 8 AM? Beat the crowds",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:56:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Perfect!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T10:56:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "See you all then! 🥾",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:00:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "This message was deleted",
+      "type": "text",
+      "deleted": true
+    },
+    {
+      "timestamp": "2024-01-15T11:01:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Sorry, wrong chat 😅",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:02:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Haha no worries",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:05:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Does anyone have recommendations for a good restaurant downtown?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:06:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "What kind of food are you looking for?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:06:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Maybe Italian or Japanese?",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:07:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "There's this amazing Italian place called \"Bella Vista\"",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:07:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "For Japanese, try \"Sakura Sushi\" - best sushi in town!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:08:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Thanks! I'll check them out",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:10:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Bella Vista has the best pasta 🍝",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:11:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Their tiramisu is to die for!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:15:00",
+      "sender": "Mike Johnson",
+      "phone": "+1234567892",
+      "content": "Guys, I need to run. Talk to you later!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:15:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "See you Mike!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:16:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Bye Mike!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:16:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Later!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:20:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "I should get back to work too. Thanks again for the congrats everyone!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:21:00",
+      "sender": "Jane Smith",
+      "phone": "+1234567891",
+      "content": "Have a great day John! And congrats again! 🎊",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:21:00",
+      "sender": "Sarah Wilson",
+      "phone": "+1234567893",
+      "content": "Yes, congrats! Talk soon!",
+      "type": "text"
+    },
+    {
+      "timestamp": "2024-01-15T11:22:00",
+      "sender": "John Doe",
+      "phone": "+1234567890",
+      "content": "Thanks! You too! 😊",
+      "type": "text"
+    }
+  ],
+  "chat_info": {
+    "name": "Friends Group",
+    "type": "group",
+    "participants": [
+      {
+        "name": "John Doe",
+        "phone": "+1234567890"
+      },
+      {
+        "name": "Jane Smith",
+        "phone": "+1234567891"
+      },
+      {
+        "name": "Mike Johnson",
+        "phone": "+1234567892"
+      },
+      {
+        "name": "Sarah Wilson",
+        "phone": "+1234567893"
+      }
+    ],
+    "created_at": "2023-06-15T14:30:00",
+    "message_count": 60
+  }
+}

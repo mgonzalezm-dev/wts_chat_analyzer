@@ -1,0 +1,37 @@
+apiVersion: v2
+name: whatsapp-reader
+description: A Helm chart for WhatsApp Conversation Reader Application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+home: https://github.com/yourusername/whatsapp-reader
+sources:
+  - https://github.com/yourusername/whatsapp-reader
+maintainers:
+  - name: Your Name
+    email: your.email@example.com
+keywords:
+  - whatsapp
+  - analytics
+  - conversation
+  - nlp
+icon: https://example.com/whatsapp-reader-icon.png
+
+dependencies:
+  - name: postgresql
+    version: 12.1.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+    tags:
+      - database
+  - name: redis
+    version: 17.3.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+    tags:
+      - cache
+  - name: nginx-ingress-controller
+    version: 4.4.0
+    repository: https://kubernetes.github.io/ingress-nginx
+    condition: ingress.enabled
+    alias: nginx-ingress

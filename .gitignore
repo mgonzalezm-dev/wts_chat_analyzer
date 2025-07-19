@@ -23,6 +23,7 @@ share/python-wheels/
 MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
+notes.txt
 
 # Virtual Environments
 venv/

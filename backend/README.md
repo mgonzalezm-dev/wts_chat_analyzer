@@ -198,4 +198,4 @@ pytest --cov=app tests/
 
 ## License
 
-[Your License Here]
+Apache 2.0

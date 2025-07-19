@@ -17,6 +17,7 @@ class Base:
     
     id: Any
     __name__: str
+    __allow_unmapped__ = True
     
     # Generate __tablename__ automatically
     @declared_attr

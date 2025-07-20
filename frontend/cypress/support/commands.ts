@@ -1,6 +1,9 @@
 // ***********************************************
 // Custom Cypress commands
 // ***********************************************
+import 'cypress-axe';
+
+// cypress-axe already provides injectAxe and checkA11y commands
 
 // Login command
 Cypress.Commands.add('login', (email?: string, password?: string) => {

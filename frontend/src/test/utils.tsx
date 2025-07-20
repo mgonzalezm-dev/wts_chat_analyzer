@@ -11,12 +11,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import authReducer from '../store/slices/authSlice';
 import conversationReducer from '../store/slices/conversationSlice';
+import uiReducer from '../store/slices/uiSlice';
 
 const theme = createTheme();
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>;
-  store?: any;
+  store?: ReturnType<typeof configureStore>;
 }
 
 export function renderWithProviders(
@@ -27,8 +28,9 @@ export function renderWithProviders(
       reducer: {
         auth: authReducer,
         conversation: conversationReducer,
-      },
-      preloadedState: preloadedState as any,
+        ui: uiReducer,
+      } as any,
+      preloadedState,
     }),
     ...renderOptions
   }: ExtendedRenderOptions = {}

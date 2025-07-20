@@ -42,7 +42,6 @@ import {
   CheckCircle as ActiveIcon,
   Cancel as InactiveIcon,
   Refresh as RefreshIcon,
-  Download as DownloadIcon,
   Security as SecurityIcon,
   Settings as SettingsIcon,
   History as HistoryIcon,
@@ -269,7 +268,7 @@ const AdminPage: React.FC = () => {
       </Box>
 
       <Paper sx={{ mb: 3 }}>
-        <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)}>
+        <Tabs value={tabValue} onChange={(_e, v) => setTabValue(v)}>
           <Tab icon={<SecurityIcon />} label="Users" />
           <Tab icon={<HistoryIcon />} label="Audit Logs" />
           <Tab icon={<SettingsIcon />} label="Settings" />
@@ -410,7 +409,7 @@ const AdminPage: React.FC = () => {
                 count={filteredUsers.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
-                onPageChange={(e, newPage) => setPage(newPage)}
+                onPageChange={(_e, newPage) => setPage(newPage)}
                 onRowsPerPageChange={(e) => {
                   setRowsPerPage(parseInt(e.target.value, 10));
                   setPage(0);

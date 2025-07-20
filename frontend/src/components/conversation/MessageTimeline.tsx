@@ -9,15 +9,12 @@ import {
   InputAdornment,
   Chip,
   CircularProgress,
-  Divider,
   Menu,
   MenuItem,
-  Tooltip,
   Fab,
 } from '@mui/material';
 import {
   Search as SearchIcon,
-  Bookmark as BookmarkIcon,
   BookmarkBorder as BookmarkBorderIcon,
   MoreVert as MoreVertIcon,
   Reply as ReplyIcon,
@@ -33,7 +30,6 @@ import {
 } from '@mui/icons-material';
 import { format, isToday, isYesterday, parseISO } from 'date-fns';
 import type { Message, Participant } from '../../types/conversation.types';
-import { useAppDispatch } from '../../hooks/redux';
 
 interface MessageTimelineProps {
   conversationId: string;
@@ -51,7 +47,6 @@ interface MessageGroup {
 }
 
 const MessageTimeline: React.FC<MessageTimelineProps> = ({
-  conversationId,
   messages,
   participants,
   loading = false,

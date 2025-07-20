@@ -5,7 +5,6 @@ import {
   Typography,
   Box,
   Paper,
-  Grid,
   Button,
   IconButton,
   Chip,
@@ -28,20 +27,14 @@ import {
   Download as DownloadIcon,
   Analytics as AnalyticsIcon,
   Search as SearchIcon,
-  Bookmark as BookmarkIcon,
-  Share as ShareIcon,
-  MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import conversationService from '../services/conversation.service';
 import MessageTimeline from '../components/conversation/MessageTimeline';
-import type { ConversationDetail, Message, Participant } from '../types/conversation.types';
+import type { ConversationDetail, Message} from '../types/conversation.types';
 
 const ConversationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  
+  const navigate = useNavigate();  
   const [conversation, setConversation] = useState<ConversationDetail | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);

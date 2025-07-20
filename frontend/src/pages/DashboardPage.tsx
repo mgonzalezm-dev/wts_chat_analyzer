@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Grid,
   Paper,
   Typography,
   Box,
@@ -115,43 +114,43 @@ const DashboardPage: React.FC = () => {
 
       {isLoading && <LinearProgress sx={{ mb: 2 }} />}
 
-      <Grid container spacing={3}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 3 }}>
         {/* Statistics Cards */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6', md: 'span 3' }, p: 1.5 }}>
           <StatCard
             title="Total Conversations"
             value={stats.total_conversations}
             icon={<ChatIcon sx={{ color: 'white' }} />}
             color="#1976d2"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Box>
+        <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6', md: 'span 3' }, p: 1.5 }}>
           <StatCard
             title="Total Messages"
             value={stats.total_messages.toLocaleString()}
             icon={<MessageIcon sx={{ color: 'white' }} />}
             color="#388e3c"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Box>
+        <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6', md: 'span 3' }, p: 1.5 }}>
           <StatCard
             title="Total Participants"
             value={stats.total_participants}
             icon={<PeopleIcon sx={{ color: 'white' }} />}
             color="#f57c00"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Box>
+        <Box sx={{ gridColumn: { xs: 'span 12', sm: 'span 6', md: 'span 3' }, p: 1.5 }}>
           <StatCard
             title="Active Conversations"
             value={stats.active_conversations}
             icon={<TrendingUpIcon sx={{ color: 'white' }} />}
             color="#7b1fa2"
           />
-        </Grid>
+        </Box>
 
         {/* Quick Actions */}
-        <Grid item xs={12} md={6}>
+        <Box sx={{ gridColumn: { xs: 'span 12', md: 'span 6' }, p: 1.5 }}>
           <Paper sx={{ p: 3, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Quick Actions
@@ -175,10 +174,10 @@ const DashboardPage: React.FC = () => {
               </Button>
             </Box>
           </Paper>
-        </Grid>
+        </Box>
 
         {/* Recent Conversations */}
-        <Grid item xs={12} md={6}>
+        <Box sx={{ gridColumn: { xs: 'span 12', md: 'span 6' }, p: 1.5 }}>
           <Paper sx={{ p: 3, height: '100%' }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <Typography variant="h6">
@@ -228,8 +227,8 @@ const DashboardPage: React.FC = () => {
               </Box>
             )}
           </Paper>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Container>
   );
 };

@@ -11,8 +11,6 @@ import {
 import {
   BarChart,
   Bar,
-  LineChart,
-  Line,
   PieChart,
   Pie,
   Cell,
@@ -20,19 +18,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
   Area,
   AreaChart,
 } from 'recharts';
 import {
-  TrendingUp as TrendingUpIcon,
-  TrendingDown as TrendingDownIcon,
   SentimentSatisfied as PositiveIcon,
   SentimentDissatisfied as NegativeIcon,
   SentimentNeutral as NeutralIcon,
@@ -290,7 +280,7 @@ const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ analytics }) => {
                     fill="#8884d8"
                     dataKey="count"
                   >
-                    {mediaStats.map((entry, index) => (
+                    {mediaStats.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>

@@ -12,7 +12,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   requiredRoles = [], 
   requiredPermissions = [] 
 }) => {
-  const { isAuthenticated, isLoading, user, hasAnyRole, hasAnyPermission } = useAuth();
+  const { isAuthenticated, isLoading, hasAnyRole, hasAnyPermission } = useAuth();
 
   // Show loading spinner while checking authentication
   if (isLoading) {

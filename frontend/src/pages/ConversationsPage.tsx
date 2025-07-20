@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 import {
   Search as SearchIcon,
-  FilterList as FilterIcon,
   MoreVert as MoreIcon,
   CloudUpload as UploadIcon,
   Delete as DeleteIcon,
@@ -65,7 +64,7 @@ const ConversationsPage: React.FC = () => {
     }));
   }, [dispatch, page, rowsPerPage, search]);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 

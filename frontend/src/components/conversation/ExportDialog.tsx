@@ -23,8 +23,6 @@ import {
   PictureAsPdf as PdfIcon,
   TableChart as CsvIcon,
   Code as JsonIcon,
-  TextFields as TxtIcon,
-  Html as HtmlIcon,
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -63,7 +61,6 @@ const ExportDialog: React.FC<ExportDialogProps> = ({
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [exportJobId, setExportJobId] = useState<string | null>(null);
 
   const handleExport = async () => {
     try {
@@ -86,7 +83,6 @@ const ExportDialog: React.FC<ExportDialogProps> = ({
 
       // Start export job
       const response = await conversationService.exportConversation(conversationId, exportRequest);
-      setExportJobId(response.job_id);
 
       // Poll for export status
       const pollInterval = setInterval(async () => {

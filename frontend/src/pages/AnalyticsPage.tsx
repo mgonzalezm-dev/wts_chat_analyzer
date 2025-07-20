@@ -23,7 +23,6 @@ import {
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
-import { useAppDispatch } from '../hooks/redux';
 import AnalyticsCharts from '../components/analytics/AnalyticsCharts';
 import type { ConversationAnalytics } from '../types/analytics.types';
 
@@ -52,7 +51,6 @@ function TabPanel(props: TabPanelProps) {
 const AnalyticsPage: React.FC = () => {
   const { conversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const [analytics, setAnalytics] = useState<ConversationAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -343,7 +341,7 @@ const AnalyticsPage: React.FC = () => {
 
       {/* Tabs */}
       <Paper sx={{ mb: 3 }}>
-        <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)}>
+        <Tabs value={tabValue} onChange={(_e, v) => setTabValue(v)}>
           <Tab label="Overview" />
           <Tab label="Sentiment" />
           <Tab label="Keywords" />

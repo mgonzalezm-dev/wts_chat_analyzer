@@ -1,8 +1,6 @@
 """
 Conversation, Participant, Message, and MessageAttachment models
 """
-
-from datetime import datetime
 from typing import Optional
 from enum import Enum
 from sqlalchemy import (
@@ -11,7 +9,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 from sqlalchemy.orm import relationship
-
 from .base import Base
 
 

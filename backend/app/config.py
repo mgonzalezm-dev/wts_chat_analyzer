@@ -1,12 +1,10 @@
 """
 Application configuration management
 """
-
 import os
 from typing import Optional, Dict, Any
-from pydantic import BaseSettings, PostgresDsn, RedisDsn, validator
 from functools import lru_cache
-
+from pydantic import BaseSettings, field_validator, PostgresDsn, RedisDsn
 
 class Settings(BaseSettings):
     """Application settings with environment variable support"""
@@ -49,7 +47,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", "5432")
     DATABASE_URL: Optional[PostgresDsn] = None
     
-    @validator("DATABASE_URL", pre=True)
+    @field_validator("DATABASE_URL", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
@@ -69,7 +67,7 @@ class Settings(BaseSettings):
     REDIS_DB: int = int(os.getenv("REDIS_DB", "0"))
     REDIS_URL: Optional[RedisDsn] = None
     
-    @validator("REDIS_URL", pre=True)
+    @field_validator("REDIS_URL", pre=True)
     def assemble_redis_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
@@ -124,13 +122,13 @@ class Settings(BaseSettings):
     CELERY_BROKER_URL: Optional[str] = None
     CELERY_RESULT_BACKEND: Optional[str] = None
     
-    @validator("CELERY_BROKER_URL", pre=True)
+    @field_validator("CELERY_BROKER_URL", pre=True)
     def get_celery_broker(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if v:
             return v
         return values.get("REDIS_URL")
     
-    @validator("CELERY_RESULT_BACKEND", pre=True)
+    @field_validator("CELERY_RESULT_BACKEND", pre=True)
     def get_celery_backend(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if v:
             return v

@@ -1,14 +1,5 @@
 """Unit tests for API endpoints."""
 import pytest
-from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
-import json
-
-from fastapi.testclient import TestClient
-from app.models.user import User
-from app.models.conversation import Conversation
-from app.models.message import Message
-
 
 class TestAuthEndpoints:
     """Test authentication endpoints."""

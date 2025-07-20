@@ -1,22 +1,19 @@
 """
 WebSocket API endpoints for real-time updates
 """
-
 import uuid
-import json
 from typing import Dict, Set, Optional
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 import asyncio
 from datetime import datetime
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation
 from app.models.audit import AuditLog, AuditAction
 from app.core.security import verify_token
-from app.core.auth import get_user_from_token
+from app.core.auth import get_current_user
 
 router = APIRouter()
 
@@ -373,7 +370,7 @@ async def broadcast_system_message(message: str, level: str = "info"):
 
 @router.get("/connections/status")
 async def get_connections_status(
-    current_user: User = Depends(get_user_from_token)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Get WebSocket connections status (admin only)

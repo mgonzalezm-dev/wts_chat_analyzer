@@ -1,15 +1,11 @@
 """
 Search API endpoints
 """
-
-import uuid
 import time
-from typing import Optional, List, Dict, Any
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from typing import List
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_, text
-from datetime import datetime
-
+from sqlalchemy import select, and_, or_
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, Message, Participant
@@ -20,7 +16,6 @@ from app.schemas.search import (
     SearchRequest,
     SearchResponse,
     SearchResultItem,
-    SearchFilters,
     SearchSuggestionsResponse,
     SearchSuggestion,
     AdvancedSearchRequest

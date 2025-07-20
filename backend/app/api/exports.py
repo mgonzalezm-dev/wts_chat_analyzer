@@ -1,20 +1,18 @@
 """
 Exports API endpoints
 """
-
 import uuid
 import os
-from typing import Optional, List
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query, BackgroundTasks
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func
 from datetime import datetime, timedelta
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, Message
-from app.models.export import Export, ExportStatus, ExportFormat
+from app.models.export import ExportStatus, ExportFormat, Export
 from app.models.audit import AuditLog, AuditAction
 from app.core.auth import get_current_active_user
 from app.schemas.export import (
@@ -22,10 +20,7 @@ from app.schemas.export import (
     ExportResponse,
     ExportStatusResponse,
     ExportListResponse,
-    ExportFilter,
-    BulkExportRequest
 )
-from app.config import settings
 from app.utils.file_storage import FileStorage
 
 router = APIRouter()

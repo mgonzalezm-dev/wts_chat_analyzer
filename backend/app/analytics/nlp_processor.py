@@ -9,7 +9,6 @@ import logging
 import spacy
 from langdetect import detect, LangDetectException
 import emoji
-
 from app.models.conversation import Message
 from app.config import settings
 

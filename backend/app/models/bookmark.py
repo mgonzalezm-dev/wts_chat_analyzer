@@ -1,14 +1,12 @@
 """
 Bookmark and Annotation models for user-generated content
 """
-
 from sqlalchemy import (
     Column, String, DateTime, ForeignKey, 
     Text, JSON, Index
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-
 from .base import Base
 
 

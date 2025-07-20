@@ -1,13 +1,11 @@
 """
 WhatsApp JSON format parser (WhatsApp Cloud API format)
 """
-
 import json
 import aiofiles
 from datetime import datetime
 from typing import List, Optional, Dict, Any, AsyncGenerator
 import logging
-
 from .base import (
     BaseParser, ParsedMessage, ParsedConversation, 
     ParsedAttachment, ParsedParticipant, MessageType

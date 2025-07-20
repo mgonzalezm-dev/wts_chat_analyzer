@@ -1,11 +1,9 @@
 """
 Authentication schemas
 """
-
 from typing import Optional, List
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from datetime import datetime
-
 
 class LoginRequest(BaseModel):
     """Login request schema"""
@@ -56,7 +54,7 @@ class ChangePasswordRequest(BaseModel):
     current_password: str = Field(..., min_length=8, description="Current password")
     new_password: str = Field(..., min_length=8, description="New password")
     
-    @validator('new_password')
+    @field_validator('new_password')
     def validate_password_strength(cls, v, values):
         """Validate password strength"""
         if 'current_password' in values and v == values['current_password']:
@@ -83,7 +81,7 @@ class ResetPasswordRequest(BaseModel):
     token: str = Field(..., description="Password reset token")
     new_password: str = Field(..., min_length=8, description="New password")
     
-    @validator('new_password')
+    @field_validator('new_password')
     def validate_password_strength(cls, v):
         """Validate password strength"""
         if not any(c.isupper() for c in v):

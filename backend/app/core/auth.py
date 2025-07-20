@@ -1,16 +1,12 @@
 """
 Authentication dependencies and decorators
 """
-
-from typing import Optional, List, Callable
-from functools import wraps
+from typing import List
 import uuid
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-
 from app.db.session import get_db
 from app.models.user import User
 from app.core.security import verify_token

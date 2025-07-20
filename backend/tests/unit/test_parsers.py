@@ -4,10 +4,8 @@ from datetime import datetime
 from pathlib import Path
 import json
 import tempfile
-
-from app.services.parsers.whatsapp_parser import WhatsAppParser
-from app.services.parsers.base_parser import ParsedMessage, ParsedConversation
-
+from app.parsers.base import ParsedConversation
+from backend.app.parsers.txt_parser import WhatsAppTxtParser
 
 class TestWhatsAppParser:
     """Test WhatsApp parser functionality."""
@@ -15,7 +13,7 @@ class TestWhatsAppParser:
     @pytest.fixture
     def parser(self):
         """Create WhatsApp parser instance."""
-        return WhatsAppParser()
+        return WhatsAppTxtParser()
     
     @pytest.mark.unit
     @pytest.mark.parser

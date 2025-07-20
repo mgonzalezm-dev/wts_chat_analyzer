@@ -1208,7 +1208,7 @@ Comprehensive input validation using Pydantic:
 
 ```python
 # backend/app/schemas/conversation.py
-from pydantic import BaseModel, validator, constr
+from pydantic import BaseModel, field_validator, constr
 from typing import Optional
 from datetime import datetime
 import re
@@ -1216,7 +1216,7 @@ import re
 class ConversationUpload(BaseModel):
     title: constr(min_length=1, max_length=255)
     
-    @validator('title')
+    @field_validator('title')
     def sanitize_title(cls, v):
         # Remove any potential XSS attempts
         v = re.sub(r'<[^>]*>', '', v)
@@ -1228,7 +1228,7 @@ class MessageCreate(BaseModel):
     content: constr(min_length=1, max_length=10000)
     sender: constr(min_length=1, max_length=100)
     
-    @validator('content')
+    @field_validator('content')
     def validate_content(cls, v):
         # Ensure no malicious content
         if any(pattern in v.lower() for pattern in ['<script', 'javascript:', 'onerror=']):

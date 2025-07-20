@@ -512,3 +512,8 @@ FodyWeavers.xsd
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Local
+TODO.md
+fixes_general.md
+fixes_backend.md

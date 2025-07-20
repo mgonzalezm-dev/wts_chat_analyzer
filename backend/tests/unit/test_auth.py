@@ -2,21 +2,28 @@
 import pytest
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
-from passlib.context import CryptContext
-
 from app.core.security import (
     create_access_token,
     create_refresh_token,
     verify_password,
     get_password_hash,
-    decode_token,
-    create_password_reset_token,
-    verify_password_reset_token
+    verify_password_reset_token,
+    generate_password_reset_token
 )
-from app.core.config import settings
 from app.models.user import User
-from app.services.auth_service import AuthService
+from app.config import Settings
 
+def decode_token(token: str) -> dict:
+    """
+    Decode and verify JWT token. Raises JWTError if token is invalid.
+    
+    Args:
+        token: JWT token to decode
+        
+    Returns:
+        Decoded token payload
+    """
+    return jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
 
 class TestPasswordHashing:
     """Test password hashing functionality."""
@@ -78,7 +85,7 @@ class TestTokenCreation:
         assert len(token) > 50
         
         # Decode and verify
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
         assert payload["sub"] == user_id
         assert "exp" in payload
     
@@ -90,7 +97,7 @@ class TestTokenCreation:
         expires_delta = timedelta(minutes=15)
         token = create_access_token(user_id, expires_delta)
         
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
         exp_time = datetime.fromtimestamp(payload["exp"])
         
         # Check expiry is approximately correct (within 1 minute)
@@ -105,7 +112,7 @@ class TestTokenCreation:
         token = create_refresh_token(user_id)
         
         assert isinstance(token, str)
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
         assert payload["sub"] == user_id
         assert payload["type"] == "refresh"
     
@@ -167,7 +174,7 @@ class TestPasswordReset:
     def test_create_password_reset_token(self):
         """Test creating password reset token."""
         email = "reset@example.com"
-        token = create_password_reset_token(email)
+        token = generate_password_reset_token(email)
         
         assert isinstance(token, str)
         assert len(token) > 50
@@ -177,7 +184,7 @@ class TestPasswordReset:
     def test_verify_password_reset_token_success(self):
         """Test verifying valid password reset token."""
         email = "valid@example.com"
-        token = create_password_reset_token(email)
+        token = generate_password_reset_token(email)
         
         verified_email = verify_password_reset_token(token)
         assert verified_email == email
@@ -191,7 +198,7 @@ class TestPasswordReset:
         # Create expired token
         expire = datetime.utcnow() - timedelta(hours=1)
         to_encode = {"sub": email, "exp": expire, "type": "password_reset"}
-        token = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+        token = jwt.encode(to_encode, Settings.SECRET_KEY, algorithm=Settings.ALGORITHM)
         
         verified_email = verify_password_reset_token(token)
         assert verified_email is None
@@ -205,6 +212,9 @@ class TestPasswordReset:
         verified_email = verify_password_reset_token(invalid_token)
         assert verified_email is None
 
+
+# Import AuthService
+from app.core.auth import AuthService
 
 class TestAuthService:
     """Test authentication service."""

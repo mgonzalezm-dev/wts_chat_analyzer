@@ -1,22 +1,19 @@
 """
 Conversations API endpoints
 """
-
 import os
 import uuid
 from datetime import datetime
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func
 from pydantic import BaseModel, Field
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, ConversationStatus, ConversationSourceType
 from app.models.audit import AuditLog, AuditAction
-from app.core.auth import get_current_active_user, require_permission
-from app.parsers import ParserFactory
+from app.core.auth import get_current_active_user
 from app.config import settings
 from app.utils.file_storage import FileStorage
 from app.tasks.ingestion import process_conversation_file

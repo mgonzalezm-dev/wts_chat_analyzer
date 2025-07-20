@@ -1,29 +1,24 @@
 """
 Messages API endpoints
 """
-
 import uuid
-from typing import Optional, List
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func
 from datetime import datetime
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, Message, Participant
-from app.models.audit import AuditLog, AuditAction
 from app.core.auth import get_current_active_user
 from app.schemas.message import (
     MessageResponse,
     MessageListResponse,
     MessageSearchRequest,
     MessageSearchResponse,
-    MessageFilter,
     MessageStats,
     MessageContext
 )
-from app.schemas.common import PaginationParams
 
 router = APIRouter()
 

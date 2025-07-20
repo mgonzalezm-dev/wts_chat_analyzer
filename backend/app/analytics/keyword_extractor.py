@@ -3,11 +3,10 @@ Keyword extraction module for identifying important terms and topics
 """
 
 import asyncio
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any
 import logging
 from collections import Counter
 import re
-import math
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 from nltk.corpus import stopwords
@@ -20,8 +19,8 @@ logger = logging.getLogger(__name__)
 try:
     nltk.download('stopwords', quiet=True)
     nltk.download('punkt', quiet=True)
-except:
-    logger.warning("Failed to download NLTK data")
+except Exception as e:
+    logger.warning(f"Failed to download NLTK data: {e}")
 
 
 class KeywordExtractor:
@@ -47,7 +46,8 @@ class KeywordExtractor:
         """Initialize stopwords list"""
         try:
             self.stopwords = set(stopwords.words(self.language))
-        except:
+        except LookupError as e:
+            logger.warning(f"Stopwords not available for language '{self.language}': {e}")
             # Fallback to basic English stopwords
             self.stopwords = {
                 'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
@@ -245,7 +245,8 @@ class KeywordExtractor:
         # Tokenize
         try:
             tokens = word_tokenize(text)
-        except:
+        except Exception as e:
+            logger.debug(f"NLTK tokenization failed, using fallback: {e}")
             # Fallback tokenization
             tokens = text.split()
         

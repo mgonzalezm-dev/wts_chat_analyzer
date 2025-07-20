@@ -1,11 +1,9 @@
 """
 Common schemas used across the API
 """
-
 from typing import Optional, Any, Dict, List
 from pydantic import BaseModel, Field
 from datetime import datetime
-
 
 class PaginationParams(BaseModel):
     """Pagination parameters for list endpoints"""

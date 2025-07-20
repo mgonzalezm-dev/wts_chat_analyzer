@@ -1,14 +1,11 @@
 """
 Conversation schemas
 """
-
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from uuid import UUID
-
-from .common import TimestampMixin, PaginationResponse
-
+from .common import TimestampMixin
 
 class ConversationBase(BaseModel):
     """Base conversation schema"""
@@ -132,7 +129,7 @@ class ConversationImportRequest(BaseModel):
     api_credentials: Dict[str, str] = Field(..., description="API credentials")
     date_range: Optional[Dict[str, datetime]] = Field(None, description="Date range for import")
     
-    @validator('api_credentials')
+    @field_validator('api_credentials')
     def validate_credentials(cls, v, values):
         """Validate API credentials based on source"""
         if 'source' in values and values['source'] == 'whatsapp_api':

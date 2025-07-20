@@ -1,13 +1,11 @@
 """
 WhatsApp text file parser implementation
 """
-
 import re
 import aiofiles
 from datetime import datetime
 from typing import List, Optional, Tuple, AsyncGenerator
 import logging
-
 from .base import (
     BaseParser, ParsedMessage, ParsedConversation, 
     ParsedAttachment, MessageType

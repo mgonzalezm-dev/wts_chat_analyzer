@@ -1,7 +1,6 @@
 """
 Database package initialization
 """
-
 from .session import get_db, AsyncSessionLocal, engine
 from .base import Base
 

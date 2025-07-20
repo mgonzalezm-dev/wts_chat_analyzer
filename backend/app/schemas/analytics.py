@@ -1,12 +1,10 @@
 """
 Analytics schemas
 """
-
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 from datetime import datetime
 from uuid import UUID
-
 
 class SentimentScore(BaseModel):
     """Sentiment score breakdown"""

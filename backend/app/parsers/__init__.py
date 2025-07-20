@@ -1,7 +1,6 @@
 """
 WhatsApp conversation parsers package
 """
-
 from .base import BaseParser, ParsedMessage, ParsedConversation
 from .txt_parser import WhatsAppTxtParser
 from .json_parser import WhatsAppJsonParser

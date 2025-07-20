@@ -1,15 +1,13 @@
 """
 Audit log model for compliance and security tracking
 """
-
 from enum import Enum
 from sqlalchemy import (
-    Column, String, DateTime, ForeignKey, 
+    Column, String, ForeignKey, 
     JSON, Index, Text
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-
 from .base import Base
 
 

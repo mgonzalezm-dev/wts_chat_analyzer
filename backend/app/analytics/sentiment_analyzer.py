@@ -3,12 +3,11 @@ Sentiment analysis module
 """
 
 import asyncio
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import logging
 from textblob import TextBlob
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-
 from app.models.conversation import Message
 from app.models.analytics import SentimentLabel
 

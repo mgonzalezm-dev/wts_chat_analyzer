@@ -7,23 +7,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from fastapi.testclient import TestClient
 from jose import jwt
-
 from app.main import app
-from app.core.config import settings
-from app.core.database import Base
 from app.models.user import User
-from app.models.conversation import Conversation
-from app.models.message import Message
+from app.models.conversation import Conversation, Message
 from app.core.security import get_password_hash
+from backend.app.config import Settings
+from backend.app.db.session import get_db
+from backend.app.models.base import Base
 
 # Test database URL
 TEST_DATABASE_URL = "sqlite:///./test.db"
 
-# Override settings for testing
-settings.DATABASE_URL = TEST_DATABASE_URL
-settings.SECRET_KEY = "test-secret-key"
-settings.ALGORITHM = "HS256"
-settings.ACCESS_TOKEN_EXPIRE_MINUTES = 30
+# Override Settings for testing
+Settings.DATABASE_URL = TEST_DATABASE_URL
+Settings.SECRET_KEY = "test-secret-key"
+Settings.ALGORITHM = "HS256"
+Settings.ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Create test engine
 engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -55,7 +54,7 @@ def db_session(db_engine) -> Generator[Session, None, None]:
 
 
 @pytest.fixture(scope="function")
-def client(db_session) -> TestClient:
+def client(db_session):
     """Create a test client with database session override."""
     def override_get_db():
         try:
@@ -214,16 +213,7 @@ def sample_whatsapp_json() -> Dict[str, Any]:
 
 def create_access_token(user_id: str) -> str:
     """Create a test access token."""
-    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(minutes=Settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = {"sub": user_id, "exp": expire}
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, Settings.SECRET_KEY, algorithm=Settings.ALGORITHM)
     return encoded_jwt
-
-
-# Import get_db after it's defined in the actual app
-try:
-    from app.core.database import get_db
-except ImportError:
-    # Define a placeholder if the actual function doesn't exist yet
-    def get_db():
-        pass

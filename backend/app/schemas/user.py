@@ -1,14 +1,11 @@
 """
 User schemas
 """
-
 from typing import Optional, List
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from datetime import datetime
 from uuid import UUID
-
-from .common import TimestampMixin, PaginationResponse
-
+from .common import TimestampMixin
 
 class UserBase(BaseModel):
     """Base user schema"""
@@ -16,13 +13,12 @@ class UserBase(BaseModel):
     full_name: str = Field(..., min_length=1, max_length=255)
     is_active: bool = True
 
-
 class UserCreate(UserBase):
     """User creation schema"""
     password: str = Field(..., min_length=8)
     roles: Optional[List[str]] = Field(default=["user"])
     
-    @validator('password')
+    @field_validator('password')
     def validate_password_strength(cls, v):
         """Validate password strength"""
         if not any(c.isupper() for c in v):
@@ -33,14 +29,12 @@ class UserCreate(UserBase):
             raise ValueError('Password must contain at least one digit')
         return v
 
-
 class UserUpdate(BaseModel):
     """User update schema"""
     email: Optional[EmailStr] = None
     full_name: Optional[str] = Field(None, min_length=1, max_length=255)
     is_active: Optional[bool] = None
     roles: Optional[List[str]] = None
-
 
 class UserResponse(UserBase, TimestampMixin):
     """User response schema"""
@@ -53,7 +47,6 @@ class UserResponse(UserBase, TimestampMixin):
     
     class Config:
         orm_mode = True
-
 
 class UserListResponse(BaseModel):
     """User list response schema"""
@@ -87,7 +80,6 @@ class UserListResponse(BaseModel):
             }
         }
 
-
 class RoleResponse(BaseModel):
     """Role response schema"""
     id: UUID
@@ -100,7 +92,6 @@ class RoleResponse(BaseModel):
     class Config:
         orm_mode = True
 
-
 class PermissionResponse(BaseModel):
     """Permission response schema"""
     id: UUID
@@ -112,7 +103,6 @@ class PermissionResponse(BaseModel):
     class Config:
         orm_mode = True
 
-
 class UserProfileUpdate(BaseModel):
     """User profile update schema"""
     full_name: Optional[str] = Field(None, min_length=1, max_length=255)
@@ -120,7 +110,6 @@ class UserProfileUpdate(BaseModel):
     timezone: Optional[str] = None
     language: Optional[str] = Field(None, regex="^[a-z]{2}(-[A-Z]{2})?$")
     notification_preferences: Optional[dict] = None
-
 
 class UserPreferences(BaseModel):
     """User preferences schema"""
@@ -137,7 +126,6 @@ class UserPreferences(BaseModel):
         "show_last_seen": True,
         "profile_visibility": "public"
     })
-
 
 class UserStats(BaseModel):
     """User statistics schema"""

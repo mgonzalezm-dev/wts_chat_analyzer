@@ -1,14 +1,12 @@
 """
 Base parser classes and data structures
 """
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional, Dict, Any, AsyncGenerator
 from enum import Enum
 import hashlib
-
 
 class MessageType(str, Enum):
     """Message types"""

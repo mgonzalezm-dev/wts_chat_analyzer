@@ -1,8 +1,6 @@
 """
 Analytics models for message analysis and conversation insights
 """
-
-from datetime import datetime
 from enum import Enum
 from sqlalchemy import (
     Column, String, Float, DateTime, ForeignKey, 
@@ -10,7 +8,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-
 from .base import Base
 
 

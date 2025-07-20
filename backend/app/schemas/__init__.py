@@ -1,7 +1,6 @@
 """
 Pydantic schemas for API validation
 """
-
 from .auth import (
     LoginRequest,
     LoginResponse,

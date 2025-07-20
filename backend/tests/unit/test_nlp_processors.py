@@ -1,13 +1,11 @@
 """Unit tests for NLP processors."""
+from mailbox import Message
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch
 from datetime import datetime
-
-from app.services.nlp.sentiment_analyzer import SentimentAnalyzer
-from app.services.nlp.keyword_extractor import KeywordExtractor
-from app.services.nlp.entity_recognizer import EntityRecognizer
-from app.models.message import Message
-
+from app.analytics.sentiment_analyzer import SentimentAnalyzer
+from app.analytics.keyword_extractor import KeywordExtractor
+from app.analytics.entity_extractor import EntityExtractor
 
 class TestSentimentAnalyzer:
     """Test sentiment analysis functionality."""
@@ -167,7 +165,7 @@ class TestKeywordExtractor:
         use neural networks to process complex data patterns.
         """
         
-        keywords = extractor.extract_from_text(text)
+        keywords = extractor.extract_keywords([text])
         
         assert len(keywords) > 0
         assert any(kw["keyword"].lower() in ["machine learning", "artificial intelligence", "deep learning"] 
@@ -185,7 +183,7 @@ class TestKeywordExtractor:
         """Test extracting limited number of keywords."""
         text = "Python programming language is great for data science and web development"
         
-        keywords = extractor.extract_from_text(text, max_keywords=3)
+        keywords = extractor.extract_keywords([text], max_keywords=3)
         assert len(keywords) <= 3
     
     @pytest.mark.unit
@@ -211,7 +209,8 @@ class TestKeywordExtractor:
             )
         ]
         
-        keywords = extractor.extract_from_messages(messages)
+        message_texts = [msg.content for msg in messages]
+        keywords = extractor.extract_keywords(message_texts)
         
         assert len(keywords) > 0
         keyword_texts = [kw["keyword"].lower() for kw in keywords]
@@ -221,14 +220,14 @@ class TestKeywordExtractor:
     @pytest.mark.nlp
     def test_extract_keywords_empty_text(self, extractor):
         """Test extracting keywords from empty text."""
-        keywords = extractor.extract_from_text("")
+        keywords = extractor.extract_keywords([""])
         assert len(keywords) == 0
     
     @pytest.mark.unit
     @pytest.mark.nlp
     def test_extract_keywords_short_text(self, extractor):
         """Test extracting keywords from very short text."""
-        keywords = extractor.extract_from_text("Hello world")
+        keywords = extractor.extract_keywords(["Hello world"])
         # Should handle gracefully, might return 0-2 keywords
         assert isinstance(keywords, list)
     
@@ -245,14 +244,22 @@ class TestKeywordExtractor:
                    content="Python for data science", timestamp=datetime.utcnow(), message_type="text"),
         ]
         
-        with patch.object(extractor, 'extract_from_messages') as mock_extract:
+        with patch.object(extractor, 'extract_keywords') as mock_extract:
             mock_extract.return_value = [
                 {"keyword": "Python", "score": 0.9},
                 {"keyword": "programming", "score": 0.7},
                 {"keyword": "data science", "score": 0.8}
             ]
             
-            analysis = extractor.get_keyword_trends(messages)
+            # Convert messages to a date-based dictionary for calculate_keyword_trends
+            messages_by_date = {}
+            for msg in messages:
+                date_str = msg.timestamp.strftime("%Y-%m-%d")
+                if date_str not in messages_by_date:
+                    messages_by_date[date_str] = []
+                messages_by_date[date_str].append(msg.content)
+                
+            analysis = extractor.calculate_keyword_trends(messages_by_date)
             assert "top_keywords" in analysis
             assert "keyword_frequency" in analysis
 
@@ -263,7 +270,7 @@ class TestEntityRecognizer:
     @pytest.fixture
     def recognizer(self):
         """Create entity recognizer instance."""
-        return EntityRecognizer()
+        return EntityExtractor()
     
     @pytest.mark.unit
     @pytest.mark.nlp

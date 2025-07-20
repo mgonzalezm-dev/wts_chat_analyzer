@@ -1,14 +1,11 @@
 """
 Message schemas
 """
-
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from uuid import UUID
-
-from .common import TimestampMixin, PaginationResponse
-
+from .common import TimestampMixin
 
 class MessageBase(BaseModel):
     """Base message schema"""
@@ -93,7 +90,7 @@ class MessageSearchRequest(BaseModel):
     date_to: Optional[datetime] = Field(None, description="End date filter")
     include_deleted: bool = Field(False, description="Include deleted messages")
     
-    @validator('message_types')
+    @field_validator('message_types')
     def validate_message_types(cls, v):
         """Validate message types"""
         if v:

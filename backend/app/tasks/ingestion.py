@@ -2,15 +2,10 @@
 Background task for processing uploaded conversation files
 """
 
-import asyncio
 import logging
 from datetime import datetime
-from typing import List
-import uuid
-
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-from sqlalchemy import select, update
-
+from sqlalchemy import select
 from app.config import settings
 from app.models.conversation import (
     Conversation, ConversationStatus, Participant, Message, MessageAttachment
@@ -101,7 +96,7 @@ async def process_conversation_file(conversation_id: str, file_path: str):
             logger.info(f"Successfully processed conversation {conversation_id}")
             
             # Trigger analytics generation
-            from .analytics import generate_conversation_analytics
+            from analytics import generate_conversation_analytics
             await generate_conversation_analytics(conversation_id)
             
         except Exception as e:

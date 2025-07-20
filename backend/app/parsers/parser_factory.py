@@ -1,13 +1,11 @@
 """
 Parser factory for automatic format detection and parser selection
 """
-
 import os
 import magic
 import chardet
-from typing import Optional, Type, BinaryIO
+from typing import Optional, Type
 import logging
-
 from .base import BaseParser
 from .txt_parser import WhatsAppTxtParser
 from .json_parser import WhatsAppJsonParser

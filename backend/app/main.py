@@ -1,7 +1,6 @@
 """
 Main FastAPI application
 """
-
 from contextlib import asynccontextmanager
 import logging
 from fastapi import FastAPI, Request
@@ -10,7 +9,6 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import make_asgi_app
 import time
-
 from app.config import settings
 from app.db.session import init_db, close_db
 from app.api import api_router

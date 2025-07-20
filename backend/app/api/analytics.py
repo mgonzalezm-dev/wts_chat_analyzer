@@ -1,14 +1,11 @@
 """
 Analytics API endpoints
 """
-
 import uuid
-from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from datetime import datetime
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, Message, Participant

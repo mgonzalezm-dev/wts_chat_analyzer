@@ -1,14 +1,11 @@
 """
 Users API endpoints
 """
-
 import uuid
-from typing import Optional, List
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_
-from pydantic import EmailStr
-
+from sqlalchemy import select, func, or_
 from app.db.session import get_db
 from app.models.user import User, Role
 from app.models.audit import AuditLog, AuditAction
@@ -23,7 +20,6 @@ from app.schemas.user import (
     UserPreferences,
     UserStats
 )
-from app.schemas.common import PaginationParams, SuccessResponse
 
 router = APIRouter()
 

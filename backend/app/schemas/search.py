@@ -1,12 +1,10 @@
 """
 Search schemas
 """
-
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from uuid import UUID
-
 
 class SearchFilters(BaseModel):
     """Search filter parameters"""
@@ -18,7 +16,7 @@ class SearchFilters(BaseModel):
     has_media: Optional[bool] = Field(None, description="Filter messages with media")
     is_bookmarked: Optional[bool] = Field(None, description="Filter bookmarked messages")
     
-    @validator('message_types')
+    @field_validator('message_types')
     def validate_message_types(cls, v):
         """Validate message types"""
         if v:
@@ -55,7 +53,7 @@ class SearchRequest(BaseModel):
     sort_by: str = Field("relevance", regex="^(relevance|date|conversation)$")
     sort_order: str = Field("desc", regex="^(asc|desc)$")
     
-    @validator('search_in')
+    @field_validator('search_in')
     def validate_search_scope(cls, v):
         """Validate search scope"""
         valid_scopes = {'messages', 'participants', 'conversations', 'bookmarks'}

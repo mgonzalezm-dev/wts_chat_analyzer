@@ -1,22 +1,18 @@
 """
 File storage utility for handling uploads and file management
 """
-
 import os
 import hashlib
 import aiofiles
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, BinaryIO
 import uuid
 import boto3
 from botocore.exceptions import ClientError
 import logging
-
 from app.config import settings
 
 logger = logging.getLogger(__name__)
-
 
 class FileStorage:
     """

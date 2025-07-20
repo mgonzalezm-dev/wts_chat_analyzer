@@ -1,14 +1,12 @@
 """
 Bookmarks API endpoints
 """
-
 import uuid
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func, or_
 from datetime import datetime
-
 from app.db.session import get_db
 from app.models.user import User
 from app.models.conversation import Conversation, Message
@@ -20,10 +18,8 @@ from app.schemas.bookmark import (
     BookmarkUpdate,
     BookmarkResponse,
     BookmarkListResponse,
-    BookmarkFilter,
     BookmarkExportRequest
 )
-from app.schemas.common import SuccessResponse
 
 router = APIRouter()
 

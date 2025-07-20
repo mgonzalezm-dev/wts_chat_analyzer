@@ -1,14 +1,11 @@
 """
 Security utilities for JWT tokens and password hashing
 """
-
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 import secrets
-
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-
 from app.config import settings
 
 # Password hashing context

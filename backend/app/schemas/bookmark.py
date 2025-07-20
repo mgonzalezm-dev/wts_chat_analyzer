@@ -1,14 +1,11 @@
 """
 Bookmark schemas
 """
-
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
 from pydantic import BaseModel, Field
 from datetime import datetime
 from uuid import UUID
-
-from .common import TimestampMixin, PaginationResponse
-
+from .common import TimestampMixin
 
 class BookmarkBase(BaseModel):
     """Base bookmark schema"""

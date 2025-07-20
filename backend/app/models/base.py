@@ -1,15 +1,11 @@
 """
 Base model class with common fields and functionality
 """
-
-from datetime import datetime
 from typing import Any
 import uuid
-
 from sqlalchemy import Column, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
-
 
 @as_declarative()
 class Base:

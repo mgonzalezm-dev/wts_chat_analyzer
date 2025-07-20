@@ -1,7 +1,6 @@
 """
 Database models package
 """
-
 from .user import User, Role, Permission, UserRole, RolePermission
 from .conversation import Conversation, Participant, Message, MessageAttachment
 from .analytics import (

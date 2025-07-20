@@ -4,11 +4,9 @@ Entity extraction module for identifying named entities, URLs, emails, etc.
 
 import re
 import asyncio
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 import logging
 import spacy
-from spacy.tokens import Doc
-
 from app.models.conversation import Message
 from app.models.analytics import EntityType
 

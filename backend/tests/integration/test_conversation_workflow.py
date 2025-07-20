@@ -1,16 +1,9 @@
 """Integration tests for complete conversation workflow."""
 import pytest
 import tempfile
-import json
 from pathlib import Path
-from datetime import datetime, timedelta
-from unittest.mock import patch, Mock
-
-from fastapi.testclient import TestClient
+from unittest.mock import patch
 from app.models.conversation import Conversation
-from app.models.message import Message
-from app.services.conversation_processor import ConversationProcessor
-
 
 class TestConversationWorkflow:
     """Test complete conversation processing workflow."""

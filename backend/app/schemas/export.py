@@ -1,14 +1,10 @@
 """
 Export schemas
 """
-
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 from uuid import UUID
-
-from .common import TimestampMixin
-
 
 class ExportRequest(BaseModel):
     """Export request schema"""
@@ -37,7 +33,7 @@ class ExportRequest(BaseModel):
         }
     )
     
-    @validator('message_types')
+    @field_validator('message_types')
     def validate_message_types(cls, v):
         """Validate message types"""
         if v:

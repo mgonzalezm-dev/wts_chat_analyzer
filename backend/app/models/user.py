@@ -1,17 +1,15 @@
 """
 User, Role, and Permission models for authentication and authorization
 """
-
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 from sqlalchemy import (
     Column, String, Boolean, DateTime, ForeignKey, 
     Table, UniqueConstraint, Index, JSON
 )
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from passlib.context import CryptContext
-
 from .base import Base
 
 # Password hashing

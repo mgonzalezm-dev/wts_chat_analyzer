@@ -1,13 +1,10 @@
 """
 Logging configuration
 """
-
 import logging
 import sys
 from pythonjsonlogger import jsonlogger
-
 from app.config import settings
-
 
 def setup_logging():
     """Configure application logging"""
